@@ -1,4 +1,5 @@
 using ApiBullyng2.Models.DB;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 
 builder.Services.AddDbContext<AppbullyingContext>(options =>
   options.UseSqlServer(connectionString));
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +32,17 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// Configurar políticas CORS para permitir el acceso desde cualquier origen
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin();
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+});
+
+
 app.MapControllers();
+
+app.Run();
 
 app.Run();
